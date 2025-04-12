@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: perpetual-dex-backend
+  labels:
+    app: perpetual-dex
+    tier: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: perpetual-dex
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: perpetual-dex
+        tier: backend
+    spec:
+      containers:
+      - name: backend
+        image: yourusername/perpetual-dex-backend:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: perpetual-dex-config
+              key: db_host
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: perpetual-dex-config
+              key: db_port
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: perpetual-dex-secrets
+              key: db_user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: perpetual-dex-secrets
+              key: db_password
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: perpetual-dex-config
+              key: db_name
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: perpetual-dex-backend
+  labels:
+    app: perpetual-dex
+    tier: backend
+spec:
+  selector:
+    app: perpetual-dex
+    tier: backend
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: perpetual-dex-config
+data:
+  db_host: "postgres"
+  db_port: "5432"
+  db_name: "perpetual_dex"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: perpetual-dex-secrets
+type: Opaque
+data:
+  db_user: cG9zdGdyZXM=  # postgres
+  db_password: cG9zdGdyZXM=  # postgres 
