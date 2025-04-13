@@ -24,7 +24,7 @@ export const getMarkets = async (): Promise<Market[]> => {
   // In production, this would call a real API endpoint
   return [
     {
-      symbol: 'BTC-USDT',
+      symbol: 'BTC-PERP',
       baseAsset: 'BTC',
       quoteAsset: 'USDT',
       indexPrice: 50000,
@@ -52,7 +52,7 @@ export const getUserPositions = async (userId: string): Promise<Position[]> => {
     {
       id: '1',
       userId,
-      symbol: 'BTC-USDT',
+      symbol: 'BTC-PERP',
       side: 'long',
       size: 1,
       entryPrice: 48000,

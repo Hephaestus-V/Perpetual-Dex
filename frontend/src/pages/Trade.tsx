@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AdvancedChart from '../components/Chart/AdvancedChart.tsx';
 
 const Trade: React.FC = () => {
   const [orderType, setOrderType] = useState<'market' | 'limit'>('market');
@@ -9,7 +10,7 @@ const Trade: React.FC = () => {
   
   // Mock market data
   const selectedMarket = {
-    symbol: 'BTC-USDT',
+    symbol: 'BTC-PERP',
     markPrice: 50010,
     bestAsk: 50015,
     bestBid: 50005,
@@ -39,10 +40,10 @@ const Trade: React.FC = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Market Info */}
-      <div className="lg:col-span-2 bg-gray-900 rounded-lg p-4">
+      {/* Market Info and Chart */}
+      <div className="lg:col-span-2">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold">BTC-USDT</h2>
+          <h2 className="text-xl font-bold">BTC-PERP</h2>
           <div className="text-xl font-semibold">${selectedMarket.markPrice.toLocaleString()}</div>
         </div>
         
@@ -65,9 +66,12 @@ const Trade: React.FC = () => {
           </div>
         </div>
         
-        <div className="h-64 bg-gray-800 rounded-lg flex items-center justify-center mb-4">
-          <p className="text-gray-500">Price Chart Would Go Here</p>
-        </div>
+        {/* Advanced Chart Component */}
+        <AdvancedChart 
+          symbol={selectedMarket.symbol} 
+          initialTimeframe="1h"
+          height={400}
+        />
       </div>
       
       {/* Order Form */}
@@ -145,28 +149,30 @@ const Trade: React.FC = () => {
           
           <div>
             <label className="block text-sm font-medium mb-1">Leverage</label>
-            <select
-              value={leverage}
-              onChange={(e) => setLeverage(e.target.value)}
-              className="bg-gray-800 w-full rounded-lg py-2 px-3"
-            >
-              <option value="1">1x</option>
-              <option value="3">3x</option>
-              <option value="5">5x</option>
-              <option value="10">10x</option>
-              <option value="20">20x</option>
-              <option value="50">50x</option>
-              <option value="100">100x</option>
-            </select>
+            <div className="mb-2">
+              <input
+                type="range"
+                min="1"
+                max="100"
+                value={leverage}
+                onChange={(e) => setLeverage(e.target.value)}
+                className="w-full"
+              />
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-gray-400">1x</span>
+              <span className="text-sm font-medium">{leverage}x</span>
+              <span className="text-sm text-gray-400">100x</span>
+            </div>
           </div>
           
           <button
             type="submit"
-            className={`w-full py-3 rounded-lg font-semibold ${
+            className={`w-full py-3 rounded-lg font-semibold text-white ${
               side === 'buy' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'
             }`}
           >
-            {side === 'buy' ? 'Buy' : 'Sell'} BTC
+            {side === 'buy' ? 'Buy' : 'Sell'} {orderType === 'market' ? 'Market' : 'Limit'}
           </button>
         </form>
       </div>

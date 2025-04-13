@@ -7,7 +7,7 @@ const Portfolio: React.FC = () => {
   const positions = [
     {
       id: '1',
-      symbol: 'BTC-USDT',
+      symbol: 'BTC-PERP',
       side: 'long',
       size: 1,
       entryPrice: 48000,
@@ -36,7 +36,7 @@ const Portfolio: React.FC = () => {
   const orders = [
     {
       id: '101',
-      symbol: 'BTC-USDT',
+      symbol: 'BTC-PERP',
       side: 'buy',
       type: 'limit',
       price: 48500,
@@ -58,7 +58,7 @@ const Portfolio: React.FC = () => {
     },
     {
       id: '103',
-      symbol: 'BTC-USDT',
+      symbol: 'BTC-PERP',
       side: 'buy',
       type: 'market',
       price: 49200,
