@@ -102,7 +102,7 @@ This project implements a perpetual DEX with the following components:
    # Create an order
    curl -X POST http://localhost:8080/api/orders/create \
      -H "Content-Type: application/json" \
-     -d '{"userId":"user123","symbol":"BTC-USDT","side":"buy","size":1,"price":50000,"type":"limit","leverage":10}'
+     -d '{"userId":"user123","symbol":"BTC-PERP","side":"buy","size":1,"price":50000,"type":"limit","leverage":10}'
 
    # Get an order
    curl http://localhost:8080/api/orders/get?id=your-order-id
