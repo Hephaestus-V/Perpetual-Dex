@@ -69,7 +69,7 @@ func (s *OrderService) GetOrderByID(orderID string) (*models.Order, error) {
 	return &models.Order{
 		ID:        orderID,
 		UserID:    "user123",
-		Symbol:    "BTC-USDT",
+		Symbol:    "BTC-PERP",
 		Side:      "buy",
 		Size:      1.0,
 		Price:     50000.0,
@@ -94,7 +94,7 @@ func (s *OrderService) GetOrdersByUserID(userID string) ([]*models.Order, error)
 		{
 			ID:        uuid.New().String(),
 			UserID:    userID,
-			Symbol:    "BTC-USDT",
+			Symbol:    "BTC-PERP",
 			Side:      "buy",
 			Size:      1.0,
 			Price:     50000.0,
